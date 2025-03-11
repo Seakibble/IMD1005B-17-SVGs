@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 9 - SVGs</title>
+
+    <style>
+        img,svg {
+            display: block;
+            width: 400px;
+            max-width: 100%;
+            margin: 20px auto;
+            background-color: lightblue;
+        }
+
+        .moveCircle {
+            animation: move 1s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(1px)}
+            to { transform: translate(-1px)}
+        }
+
+        circle:hover {
+            fill: gold;
+        }
+
+        .circles {
+            animation: spin 1s infinite;
+            transform-origin: 10px 8px;
+        }
+        @keyframes spin {
+            from { transform: rotate(0turn); }
+            to { transform: rotate(0.25turn);}
+        }
+
+        text {
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- We can include SVGs as images from a .svg file, just like any other image -->
+    <img src="images/cloud-rain-alt.svg" alt="">
+
+    <!-- Alternatively, we can include the SVG code directly in the HTML. This can get messy, but has some big advantages - specficially, if it's inlcuded in the HTML, then it's accessible via the inspector, and these elements will accept styles from our stylesheet. This means we can do things like apply hover effects, styles based on classes, event listeners with JavaScript, animations, etc. -->
+    <!-- we can either set a width and height inline like this, or set it with CSS. -->
+    <svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 14.7519C3.37037 13.8768 3 12.8059 3 11.6493C3 9.20008 4.8 6.9375 7.5 6.5C8.34694 4.48637 10.3514 3 12.6893 3C15.684 3 18.1317 5.32251 18.3 8.25C19.8893 8.94488 21 10.6503 21 12.4969C21 13.5693 20.6254 14.5541 20 15.3275M12.5 12.9995L10.5 21.0008M8.5 11.9995L6.5 20.0008M16.5 12L14.5 20.0013" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- The viewbox attribute defines the offet and 'zoom' of the SVG image. If we imagine the SVG as a map, then the first two numbers of viewbox let us move the image around *within* the element - left/right up/down. -->
+    <!-- The last two numbers control the scale - this is effectively how zoomed in or out the image is. All the coordinate numbers within the SVG will assume that size of the actual SVG element in pixels is equal to these numbers. So if we define the SVG as being 400px wide, then each unit (given the below viewbox) will correspond to 20px on the screen. -->
+    <svg viewbox="0 0 20 20">
+        <rect 
+            width="10" height="4" 
+            x="1" y="1"
+            rx="5" ry="1"
+            fill="red"
+            stroke="black"
+            stroke-width="0.25"/>
+
+        <circle class="moveCircle"
+            r="3" cx="15" cy="5" 
+            fill="green"
+            stroke="black"
+            stroke-width="1"/>
+
+        <ellipse cx="4" cy="12" rx="3" ry="6" />
+
+        <line 
+            x1="7" y1="7" 
+            x2="9" y2="10" 
+            stroke="red" stroke-linecap="round" />
+
+        <polyline points="12,8 14,8 15,11 10,13" 
+            stroke="green" stroke-width="1"
+            fill="none" 
+            stroke-linecap="round" 
+            stroke-linejoin="round" />
+
+        <polygon points="14,14 16,14 17,17 12,19"
+            stroke="green" stroke-width="1"
+            fill="blue" 
+            stroke-linejoin="round" />
+    </svg>
+
+    <svg viewbox="0 0 20 20">
+        <line x1="10" y1="8" x2="10" y2="15" 
+            stroke="black"
+            stroke-linecap="round"/>
+
+        <g class="circles">
+            <circle r="0.5" cx="8" cy="8" fill="red"/>
+            <circle r="0.5" cx="12" cy="8" fill="red"/>
+            <circle r="0.5" cx="10" cy="6" fill="red"/>
+            <circle r="0.5" cx="10" cy="10" fill="red"/>
+        </g>
+    </svg>
+
+    <svg viewbox="0 0 20 20">
+        <defs>
+            <g id="building">
+                <rect width="6" height="3" x='4' y="4" fill="firebrick" />
+                <rect width="1" height="1.5" x='8' y="5.5" fill="black" />
+                <polygon points="4,4 5,2 6,4 5,5" fill="firebrick" />
+            </g>
+        </defs>
+        
+        <use href="#building" x="-3"/>
+        <use href="#building" x="4"/>
+        <use href="#building" x="11"/>
+    </svg>
+
+    <svg viewbox="0 0 20 20">
+        <defs>
+            <linearGradient id="gradient">
+                <stop offset="0%" stop-color="red"/>
+                <stop offset="100%" stop-color="blue"/>
+            </linearGradient>
+        </defs>
+        <rect width="15" height="3" x="2.5" y="10"
+            fill="url(#gradient)"/>
+        <text y="9" x="4" font-size="3" fill="url(#gradient)">HELLO!</text>
+    </svg>
+
+    <svg viewbox="0 0 100 100">
+        <defs>
+            <pattern id="dots" x="-5" y="-5" width="10" height="10" patternUnits="userSpaceOnUse">
+                <rect width="10" height='10' fill='red' />
+                <circle r="5.4" cx="5" cy="5" fill="black"/>
+            </pattern>
+        </defs>
+
+        <rect width="100" height="50" fill="url(#dots)"/>
+        <text y="80" font-size="18" fill="url(#dots)">PATTERNS</text>
+    </svg>
+
+    <svg viewbox="0 0 500 500">
+        <defs>
+            <pattern id="goat" width="500" height="500" patternUnits="userSpaceOnUse">
+                <image href="/images/goat.jpg" x="-300" y="-50"/>
+            </pattern>
+        </defs>
+        <text font-size="160" y='450' fill="url(#goat)">GOAT</text>
+    </svg>
+</body>
+</html>
