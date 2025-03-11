@@ -55,6 +55,8 @@
     <!-- The viewbox attribute defines the offet and 'zoom' of the SVG image. If we imagine the SVG as a map, then the first two numbers of viewbox let us move the image around *within* the element - left/right up/down. -->
     <!-- The last two numbers control the scale - this is effectively how zoomed in or out the image is. All the coordinate numbers within the SVG will assume that size of the actual SVG element in pixels is equal to these numbers. So if we define the SVG as being 400px wide, then each unit (given the below viewbox) will correspond to 20px on the screen. -->
     <svg viewbox="0 0 20 20">
+        <!-- SVGs are constructed out of various primitive shapes defined with math -->
+        <!-- Rect lets us make rectangles. For most SVG elements we can define attributes like the fill colour, the stroke width and colour, and its x and y offsets. For rect specificall, we set its width and height, and curvature of the corners using rx and ry -->
         <rect 
             width="10" height="4" 
             x="1" y="1"
@@ -63,25 +65,31 @@
             stroke="black"
             stroke-width="0.25"/>
 
+        <!-- Circles are simiar to rect, except we define a radius, and the offset of the center -->
         <circle class="moveCircle"
             r="3" cx="15" cy="5" 
             fill="green"
             stroke="black"
             stroke-width="1"/>
 
+        <!-- Ellipse is like circle, but it has different radii for the x and y axes -->
         <ellipse cx="4" cy="12" rx="3" ry="6" />
 
+        <!-- Line takes two coordinates, x1/y1 and x2/y2 to define a line in the SVG. -->
+        <!-- There are many properties that control stroke attributes. We can set stroke-linecap to change the presentation of the ends of the lines. -->
         <line 
             x1="7" y1="7" 
             x2="9" y2="10" 
             stroke="red" stroke-linecap="round" />
 
+        <!-- Polyline takes a string of points. We can optionally set a    fill colour. -->
         <polyline points="12,8 14,8 15,11 10,13" 
             stroke="green" stroke-width="1"
             fill="none" 
             stroke-linecap="round" 
             stroke-linejoin="round" />
 
+        <!-- Polygon is exactly like polyline, except the stroke will automatically close itself at the end. -->
         <polygon points="14,14 16,14 17,17 12,19"
             stroke="green" stroke-width="1"
             fill="blue" 
@@ -93,6 +101,8 @@
             stroke="black"
             stroke-linecap="round"/>
 
+        <!-- We can group together different elements with a <g> tag.-->
+        <!-- When SVGs are in the HTML like this, we can apply styles to them from our CSS. So we can do things like put classes on them and animate them, as we've done here. As a group, they'll behave as a single element. -->
         <g class="circles">
             <circle r="0.5" cx="8" cy="8" fill="red"/>
             <circle r="0.5" cx="12" cy="8" fill="red"/>
@@ -102,6 +112,7 @@
     </svg>
 
     <svg viewbox="0 0 20 20">
+        <!-- We can define templates using <defs>. Anything we put in here can have an id, which we can reference to drop a copy of a complex shape to the SVG. -->
         <defs>
             <g id="building">
                 <rect width="6" height="3" x='4' y="4" fill="firebrick" />
@@ -110,6 +121,7 @@
             </g>
         </defs>
         
+        <!-- <use> lets us reference our templates in <defs>. Be aware that the contents of anything brought in using <use> will not be accessible to the CSS, so we won't be able to apply animations or hover states or anything else to the component parts of the template. -->
         <use href="#building" x="-3"/>
         <use href="#building" x="4"/>
         <use href="#building" x="11"/>
@@ -117,6 +129,7 @@
 
     <svg viewbox="0 0 20 20">
         <defs>
+            <!-- We can define gradients. These have colour stops which define where the colours should shift along the ramps. -->
             <linearGradient id="gradient">
                 <stop offset="0%" stop-color="red"/>
                 <stop offset="100%" stop-color="blue"/>
@@ -124,24 +137,35 @@
         </defs>
         <rect width="15" height="3" x="2.5" y="10"
             fill="url(#gradient)"/>
+
+        <!-- We can put text in our SVGs as well. Here we've applied a gradient in place of a solid fill. -->
+        <!-- We can put a gradient anywhere we can put a fill. -->
         <text y="9" x="4" font-size="3" fill="url(#gradient)">HELLO!</text>
     </svg>
 
     <svg viewbox="0 0 100 100">
         <defs>
+            <!-- The last concept to explore here is patterns. Like gradients, these can be applied in place of a fill to produce more interesting content. -->
+            <!-- Critically, we need an id to reference, and a width and height to define how big each tile of the pattern should be, and this patternUnits attribute to define how the tiling should work. An x and y offset is optional. -->
             <pattern id="dots" x="-5" y="-5" width="10" height="10" patternUnits="userSpaceOnUse">
+                <!-- In this example, we've got a solid red background, with large circles that overlap to produce a pattern of concave diamonds. -->
                 <rect width="10" height='10' fill='red' />
                 <circle r="5.4" cx="5" cy="5" fill="black"/>
             </pattern>
         </defs>
 
+        <!-- This is just a single rect that fills the space and holds our pattern as a fill. -->
         <rect width="100" height="50" fill="url(#dots)"/>
+
+        <!-- Again, we can apply patterns to text as well. We can also style this text as we would any other text on the page. I'm doing it inline here for clarity, but it can (and probably should) be applied in your stylesheet. -->
         <text y="80" font-size="18" fill="url(#dots)">PATTERNS</text>
     </svg>
 
     <svg viewbox="0 0 500 500">
+        <!-- Finally, we can also define patterns using images. -->
         <defs>
             <pattern id="goat" width="500" height="500" patternUnits="userSpaceOnUse">
+                <!-- When we add an image (which doesn't need to be done in a pattern, specifically), don't be confused with HTML <img src=""> tags. These ones are spelled <image> and take an href, not a src. -->
                 <image href="/images/goat.jpg" x="-300" y="-50"/>
             </pattern>
         </defs>
